@@ -2,33 +2,33 @@
 #include <winsock2.h>
 #include <string>
 
-//	İ’è’l
+//	è¨­å®šå€¤
 
 //	Proxy
 const std::string strProxyAddress = "XXX.XXX.XXX.XXX";
 const int nProxyPort = 8080;
 
-//	Ú‘±ƒ†[ƒU[î•ñ
-//	”hŒ­Œ³ CD
+//	æ¥ç¶šãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±
+//	æ´¾é£å…ƒ CD
 const std::string strBaseCD = "XXXX";
-//	ƒXƒ^ƒbƒtID
+//	ã‚¹ã‚¿ãƒƒãƒ•ID
 const std::string strStaffID = "XXXXXXX";
-//	ƒpƒXƒ[ƒh
+//	ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
 const std::string strPassword = "XXXXXXXXX";
 
-//	POST‚µ‚ÄArecvî•ñ‚ğæ“¾
+//	POSTã—ã¦ã€recvæƒ…å ±ã‚’å–å¾—
 std::string getPostData( SOCKET sock, const std::string& strPostData )
 {
 	std::string strRecvData;
 
-	// HTTPƒŠƒNƒGƒXƒg‘—M
+	// HTTPãƒªã‚¯ã‚¨ã‚¹ãƒˆé€ä¿¡
 	int n = send(sock, strPostData.c_str(), strPostData.size(), 0);
 	if (n < 0) {
 		printf("send : %d\n", WSAGetLastError());
 		return strRecvData;
 	}
 	
-	// ƒT[ƒo‚©‚ç‚ÌHTTPƒƒbƒZ[ƒWóM
+	// ã‚µãƒ¼ãƒã‹ã‚‰ã®HTTPãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å—ä¿¡
 	char buf[1024];
 	while (n > 0) {
 		memset(buf, 0, sizeof(buf));
@@ -37,23 +37,23 @@ std::string getPostData( SOCKET sock, const std::string& strPostData )
 			printf("recv : %d\n", WSAGetLastError());
 			return strRecvData;
 		}
-		// óMŒ‹‰Ê‚ğ•\¦
+		// å—ä¿¡çµæœã‚’è¡¨ç¤º
 		//fwrite(buf, n, 1, stdout);
 
-		//	óMƒf[ƒ^‚É’Ç‰Á
+		//	å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã«è¿½åŠ 
 		strRecvData.append(buf,n);
 	}
 
-	//	ƒf[ƒ^‚ğ•Ô‚·
+	//	ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
 	return strRecvData;
 }
 
-//	ƒ\ƒPƒbƒg‚ğì¬‚·‚é
-//		¬Œ÷:nError==0
+//	ã‚½ã‚±ãƒƒãƒˆã‚’ä½œæˆã™ã‚‹
+//		æˆåŠŸ:nError==0
 int makeSocket(
-		SOCKET*				pSock,				//	ƒ\ƒPƒbƒg
-		const std::string&	strServerAddress,	//	Ú‘±æƒAƒhƒŒƒX
-		int					nServerPort			//	Ú‘±æƒ|[ƒg
+		SOCKET*				pSock,				//	ã‚½ã‚±ãƒƒãƒˆ
+		const std::string&	strServerAddress,	//	æ¥ç¶šå…ˆã‚¢ãƒ‰ãƒ¬ã‚¹
+		int					nServerPort			//	æ¥ç¶šå…ˆãƒãƒ¼ãƒˆ
 )
 {
 
@@ -67,13 +67,13 @@ int makeSocket(
 	}
 
 	server.sin_family = AF_INET;
-	server.sin_port = htons(nServerPort); // Ú‘±ƒ|[ƒg
+	server.sin_port = htons(nServerPort); // æ¥ç¶šãƒãƒ¼ãƒˆ
 
 	server.sin_addr.S_un.S_addr = inet_addr(strServerAddress.c_str());
 	if (server.sin_addr.S_un.S_addr == 0xffffffff) {
 		struct hostent *host;
 
-		host = gethostbyname(strServerAddress.c_str());	//	Ú‘±æƒAƒhƒŒƒX
+		host = gethostbyname(strServerAddress.c_str());	//	æ¥ç¶šå…ˆã‚¢ãƒ‰ãƒ¬ã‚¹
 
 		if (host == NULL) {
 			if (WSAGetLastError() == WSAHOST_NOT_FOUND) {
@@ -87,7 +87,7 @@ int makeSocket(
 		while (*addrptr != NULL) {
 			server.sin_addr.S_un.S_addr = *(*addrptr);
 
-			// connect()‚ª¬Œ÷‚µ‚½‚çloop‚ğ”²‚¯‚Ü‚·
+			// connect()ãŒæˆåŠŸã—ãŸã‚‰loopã‚’æŠœã‘ã¾ã™
 			if (connect(*pSock,
 					(struct sockaddr *)&server,
 					sizeof(server)) == 0) {
@@ -95,10 +95,10 @@ int makeSocket(
 			}
 
 			addrptr++;
-			// connect‚ª¸”s‚µ‚½‚çŸ‚ÌƒAƒhƒŒƒX‚Å‚µ‚Ü‚·
+			// connectãŒå¤±æ•—ã—ãŸã‚‰æ¬¡ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã§è©¦ã—ã¾ã™
 		}
 
-		// connect‚ª‘S‚Ä¸”s‚µ‚½ê‡
+		// connectãŒå…¨ã¦å¤±æ•—ã—ãŸå ´åˆ
 		if (*addrptr == NULL) {
 			printf("connect : %d\n", WSAGetLastError());
 			return 1;
@@ -110,7 +110,7 @@ int makeSocket(
 		}
 	}
 
-	//	¬Œ÷
+	//	æˆåŠŸ
 	return 0;
 
 }
@@ -124,28 +124,28 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	std::string strCookie;	//	ƒNƒbƒL[
+	std::string strCookie;	//	ã‚¯ãƒƒã‚­ãƒ¼
 
-	//	ƒƒOƒCƒ“AƒNƒbƒL[æ“¾
+	//	ãƒ­ã‚°ã‚¤ãƒ³ã€ã‚¯ãƒƒã‚­ãƒ¼å–å¾—
 	{
 		SOCKET sock;
 
-		//	ƒ\ƒPƒbƒgì¬
+		//	ã‚½ã‚±ãƒƒãƒˆä½œæˆ
 		if( makeSocket( &sock, strProxyAddress,	nProxyPort ) ){
-			printf("Ú‘±‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½\n");
+			printf("æ¥ç¶šã§ãã¾ã›ã‚“ã§ã—ãŸ\n");
 			return 1;	
 		}
 
-		//	ƒŠƒNƒGƒXƒg‚ğ“Š‚°‚é
+		//	ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’æŠ•ã’ã‚‹
 		std::string strPostData;
-		strPostData += "POST http://www.digisheet.info/servlet/d HTTP/1.1\r\n";
+		strPostData += "POST http://www.xxxxxxxx.com/servlet/d HTTP/1.1\r\n";
 		strPostData += "Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/msword, */*\r\n";
-		strPostData += "Referer: http://www.digisheet.info/staffLogin.html\r\n";
+		strPostData += "Referer: http://www.xxxxxxxx.com/staffLogin.html\r\n";
 		strPostData += "Accept-Language: ja\r\n";
 		strPostData += "User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; Lunascape 3.0.4)\r\n";
 		strPostData += "Content-Type: application/x-www-form-urlencoded\r\n";
 		strPostData += "Accept-Encoding: gzip, deflate\r\n";
-		strPostData += "Host: www.digisheet.info\r\n";
+		strPostData += "Host: www.xxxxxxxx.com\r\n";
 		strPostData += "Content-Length: 63\r\n";
 		strPostData += "Proxy-Connection: Keep-Alive\r\n";
 		strPostData += "Pragma: no-cache\r\n";
@@ -153,13 +153,13 @@ int main(int argc, char *argv[])
 		strPostData += "\r\n";
 		strPostData += "HC=XXXX&UI=XXXXXXX&Pw=XXXXXXX&loginButton=login&SI=&CI=0&Typ=1\r\n";
 		
-		//	ƒf[ƒ^‘—MAóM
+		//	ãƒ‡ãƒ¼ã‚¿é€ä¿¡ã€å—ä¿¡
 		std::string strRecvData = getPostData( sock, strPostData );
 
 		printf("******\n");
 		printf("%s",strRecvData.c_str());
 
-		//ƒNƒbƒL[‚ğæ“¾
+		//ã‚¯ãƒƒã‚­ãƒ¼ã‚’å–å¾—
 		unsigned int nPos = strRecvData.rfind("Set-Cookie: ");
 		strCookie.append( strRecvData,nPos+31,10);
 		printf("strBuff=%s\n",strCookie.c_str());
@@ -168,45 +168,45 @@ int main(int argc, char *argv[])
 		closesocket(sock);
 	}
 
-	//	î•ñ‘—M
+	//	æƒ…å ±é€ä¿¡
 	{
 		SOCKET sock;
 
-		//	ƒ\ƒPƒbƒgì¬
+		//	ã‚½ã‚±ãƒƒãƒˆä½œæˆ
 		if( makeSocket( &sock, strProxyAddress,	nProxyPort ) ){
-			printf("Ú‘±‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½\n");
+			printf("æ¥ç¶šã§ãã¾ã›ã‚“ã§ã—ãŸ\n");
 			return 1;	
 		}
 
-		//	ƒŠƒNƒGƒXƒg‚ğ“Š‚°‚é
+		//	ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’æŠ•ã’ã‚‹
 		std::string strPostData;
 
-		//	ƒf[ƒ^‘—M
-		strPostData += "POST http://www.digisheet.info/servlet/d HTTP/1.1\r\n";
+		//	ãƒ‡ãƒ¼ã‚¿é€ä¿¡
+		strPostData += "POST http://www.xxxxxxxx.com/servlet/d HTTP/1.1\r\n";
 		strPostData += "Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/msword, */*\r\n";
-		strPostData += "Referer: http://www.digisheet.info/servlet/d\r\n";
+		strPostData += "Referer: http://www.xxxxxxxx.com/servlet/d\r\n";
 		strPostData += "Accept-Language: ja\r\n";
 		strPostData += "User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; Lunascape 3.0.4)\r\n";
 		strPostData += "Content-Type: application/x-www-form-urlencoded\r\n";
 		strPostData += "Accept-Encoding: gzip, deflate\r\n";
-		strPostData += "Host: www.digisheet.info\r\n";
+		strPostData += "Host: www.xxxxxxxx.com\r\n";
 		strPostData += "Content-Length: 543\r\n";
 		strPostData += "Proxy-Connection: Keep-Alive\r\n";
 		strPostData += "Pragma: no-cache\r\n";
 		//Cookie: JServSessionIdroot=bpiyfvbra1
 		strPostData += "\r\n";
 		strPostData += "HC=7008&Cl=null&SI=";
-		strPostData += strCookie;				//@ƒNƒbƒL[
-		strPostData += "&UI=XXXXXXX";			//	Ğˆõ”Ô†
+		strPostData += strCookie;				//ã€€ã‚¯ãƒƒã‚­ãƒ¼
+		strPostData += "&UI=XXXXXXX";			//	ç¤¾å“¡ç•ªå·
 		strPostData += "&CI=101";
 		strPostData += "&SubCommandID=2";
 		strPostData += "&Typ=1";
-		strPostData += "&Cr=0000XXXXXXX001";	//	Ğˆõ”Ô†{H
-		strPostData += "&Y=2006";				//	”N
-		strPostData += "&M=11";					//	Œ
+		strPostData += "&Cr=0000XXXXXXX001";	//	ç¤¾å“¡ç•ªå·ï¼‹ï¼Ÿ
+		strPostData += "&Y=2006";				//	å¹´
+		strPostData += "&M=11";					//	æœˆ
 		strPostData += "&Up=2";
 		strPostData += "&PrevCommandID=101";
-		strPostData += "&D=6";					//	“ú
+		strPostData += "&D=6";					//	æ—¥
 		strPostData += "&Years=2006";
 		strPostData += "&PrevSubCommandID=";
 		strPostData += "&YearStart=2006";
@@ -221,12 +221,12 @@ int main(int argc, char *argv[])
 		strPostData += "&CalculateFlag=80";
 		strPostData += "&AttendSelect=A0";
 		strPostData += "&SaveAttendSelect=A0";
-		strPostData += "&HourStart=9";		//n‹ÆŠÔ
-		strPostData += "&MinuteStart=0";	//n‹ÆŠÔ
-		strPostData += "&HourRest=1";		//‹xŒeŠÔ
-		strPostData += "&MinuteRest=0";		//‹xŒeŠÔ
-		strPostData += "&HourEnd=21";		//I—¹ŠÔ
-		strPostData += "&MinuteEnd=0";		//I—¹ŠÔ
+		strPostData += "&HourStart=9";		//å§‹æ¥­æ™‚é–“
+		strPostData += "&MinuteStart=0";	//å§‹æ¥­æ™‚é–“
+		strPostData += "&HourRest=1";		//ä¼‘æ†©æ™‚é–“
+		strPostData += "&MinuteRest=0";		//ä¼‘æ†©æ™‚é–“
+		strPostData += "&HourEnd=21";		//çµ‚äº†æ™‚é–“
+		strPostData += "&MinuteEnd=0";		//çµ‚äº†æ™‚é–“
 		strPostData += "&OverHourRest=0";
 		strPostData += "&OverMinuteRest=0";
 		strPostData += "&NightHourRest=0";
@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
 		strPostData += "&ProcTimeMinute=0";
 		strPostData += "&CommentInput=\r\n";
 
-		//	ƒf[ƒ^‘—MAóM
+		//	ãƒ‡ãƒ¼ã‚¿é€ä¿¡ã€å—ä¿¡
 		std::string strRecvData = getPostData( sock, strPostData );
 
 		printf("******\n");
